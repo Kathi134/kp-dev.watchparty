@@ -1,0 +1,28 @@
+.horizontal-container {
+    display: flex;
+}
+
+.vertical-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.center {
+    align-items: center;
+}
+
+.space-between {
+    justify-content: space-between;
+}
+
+.space-around {
+    justify-content: space-around;
+}
+
+.space-evenly {
+    justify-content: space-evenly;
+}
+
+.padding-left {
+    padding-left: 0.5rem;
+}
