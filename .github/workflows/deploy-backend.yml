@@ -1,0 +1,33 @@
+name: Deploy Watchparty Backend
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Build with Gradle
+        working-directory: ./backend
+        run: ./gradlew clean build -x test
+
+      - name: Deploy to server
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SERVER_USER: ${{ secrets.SERVER_USER }}
+          SERVER_HOST: ${{ secrets.SERVER_HOST }}
+        run: |
+          echo "$SSH_PRIVATE_KEY" > private_key.pem
+          chmod 600 private_key.pem
+          scp -i private_key.pem -o StrictHostKeyChecking=no build/libs/watchparty-0.0.1-SNAPSHOT.jar $SERVER_USER@$SERVER_HOST:/home/$SERVER_USER/watchparty.jar
+          ssh -i private_key.pem -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_HOST "sudo systemctl restart watchparty"

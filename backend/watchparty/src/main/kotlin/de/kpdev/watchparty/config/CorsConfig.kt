@@ -12,7 +12,7 @@ class CorsConfig {
     fun corsConfigurer(): WebMvcConfigurer = object : WebMvcConfigurer {
         override fun addCorsMappings(registry: CorsRegistry) {
             registry.addMapping("/**")
-                .allowedOrigins("http://localhost:3000")
+                .allowedOrigins("http://localhost:3000", "https://watchparty.kp-dev.de", "https://api.watchparty.kp-dev.de")
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
         }
     }

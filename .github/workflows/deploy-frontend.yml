@@ -1,0 +1,39 @@
+name: Deploy Watchparty
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        working-directory: frontend/watchparty
+        run: npm install
+
+      - name: Build React app
+        working-directory: frontend/watchparty
+        run: npm run build
+
+      - name: Deploy to server
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SERVER_USER: ${{ secrets.SERVER_USER }}
+          SERVER_HOST: ${{ secrets.SERVER_HOST }}
+          SERVER_PATH: "/var/www/html/kp-dev/watchparty"
+        run: |
+          echo "$SSH_PRIVATE_KEY" > private_key.pem
+          chmod 600 private_key.pem
+          rsync -e "ssh -i private_key.pem -o StrictHostKeyChecking=no" -avz --delete build/ $SERVER_USER@$SERVER_HOST:$SERVER_PATH
+          ssh -i private_key.pem -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_HOST "sudo systemctl restart apache2"
