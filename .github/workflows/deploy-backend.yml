@@ -17,6 +17,10 @@ jobs:
           distribution: temurin
           java-version: 17
 
+      - name: Make Gradle wrapper executable
+        working-directory: ./backend/watchparty
+        run: chmod +x ./gradlew
+
       - name: Build with Gradle
         working-directory: ./backend/watchparty
         run: ./gradlew clean build -x test
