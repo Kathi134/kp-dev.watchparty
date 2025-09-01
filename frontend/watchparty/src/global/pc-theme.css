@@ -1,0 +1,65 @@
+/* Grundlegende Schriftarten */
+@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Prince+and+Princess+Charming&display=swap');
+
+:root {
+  --default: #121212;
+  --default-light: #ffeee4;
+  --primary-highlight: #db0042;
+  --primary-highlight-light: #db688b;
+  --secondary-highlight: #ff5e00;
+  --secondary-highlight-light: #f5a373;
+  --base: #ffecf2;
+}
+
+body {
+  background-color: var(--base);
+  color: var(--default);
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
+}
+
+/* Überschriften */
+h1, h2, h3, h4 {
+  text-align: center;
+}
+h1 { color: var(--primary-highlight); }
+h2 { color: var(--secondary-highlight); }
+h3 { color: var(--primary-highlight-light); }
+h3 { color: var(--secondary-highlight-light); }
+
+/* Buttons */
+button, .button {
+  background: var(--primary-highlight-light);
+  border: none;
+  border-radius: 25px;
+  color: var(--default-light);
+  font-size: 1rem;
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+button:hover {
+  background: var(--primary-highlight);
+}
+
+button.small, .button.small {
+    background-color: var(--secondary-highlight-light);
+    padding: 0.25rem 0.5rem;
+}
+
+button.small:hover, .button.small:hover {
+    background-color: var(--secondary-highlight);
+}
+
+/* Links */
+a, .a {
+  color: var(--primary-highlight);
+  text-decoration: none;
+}
+
+a:hover, .a:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}

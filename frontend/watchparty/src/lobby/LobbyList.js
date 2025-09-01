@@ -3,13 +3,12 @@
 export default function LobbyList({lobbies, onLobbyClick}) {    
     return (<>
         {lobbies.length 
-        ? <ul>
-                {lobbies.map(l => 
-                    <li key={l.id} onClick={() => onLobbyClick(l.id)}>
-                        Lobby {l.id} ({l.members.length} Mitglieder)
-                    </li>
-                )}
-            </ul>
-            : "Keine Lobbies zur Verfügung."}
+          ? lobbies.map(l => 
+                <span key={l.id} onClick={() => onLobbyClick(l.id)}>
+                    Lobby <span className="small a">{l.id}</span> ({l.members.length})
+                </span>
+            )
+          : "Keine Lobbies zur Verfügung."
+        }
     </>);
 }

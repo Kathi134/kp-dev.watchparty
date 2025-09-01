@@ -7,12 +7,21 @@
     flex-direction: column;
 }
 
+.gap-1 {
+    gap: 0.5rem;
+}
+
+.small {
+    font-size: smaller;
+}
+
 .fixed-container {
     width: 50%;
 }
 
 .center {
     align-items: center;
+    text-align: center;
 }
 
 .space-between {
@@ -33,4 +42,9 @@
 
 .top-margin {
     margin-top: 0.5rem;
+}
+
+.bottom {
+    position: absolute;
+    bottom: 0;
 }
