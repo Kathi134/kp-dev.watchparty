@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useState } from 'react';
 import './lobby.css'
+import { useCallback, useEffect, useState } from 'react';
 import { API_URL } from '../global/api';
 import EditableText from '../global/components/EditableText';
 
@@ -50,7 +50,7 @@ export default function LobbyHub({lobby, me, onStartGame}) {
         
             <div>
                 <h3 className='no-bottom-margin'>Spieler*innen:</h3>
-                <div id="member-container" className='top-margin'>
+                <div id="member-container" className='top-margin section-container'>
                     {lobby.members?.map(member => (
                         <div key={member.id} className={member.id === me.id ? 'marked' : ''}>
                             {member.id === me.id 
@@ -67,7 +67,7 @@ export default function LobbyHub({lobby, me, onStartGame}) {
             </div>
 
             <div className='top-margin'>
-                <span className='small'>💡 Doppelklicke den Lobbynamen oder deinen Namen,<br/>um ihn zu ändern.</span>
+                <span className='small'>💡Doppelklicke den Lobbynamen oder deinen Namen,<br/>um ihn zu ändern.</span>
             </div>
         </div>
     );

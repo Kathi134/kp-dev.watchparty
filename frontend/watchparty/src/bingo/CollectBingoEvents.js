@@ -1,8 +1,8 @@
+import "./setup.css"
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { API_URL } from "../global/api";
 import { useWebSocket } from "../global/useWebSocket";
-
 
 export default function CollectBingoEvents({game, updateGameObject, handleItemSelection}) {
     const { id: lobbyId } = useParams();
@@ -37,20 +37,20 @@ export default function CollectBingoEvents({game, updateGameObject, handleItemSe
         if(e.key === "Enter") { addItem(); }
     }
 
-    return (<div className="vertical-container fixed-container">
+    return (<div className="vertical-container section-container">
         <h3>Ereignis-Sammlung</h3>
-        <div>
-            <input value={input} onChange={e => setInput(e.target.value)} onKeyDown={handleKeyDown}/>
-            <button onClick={addItem}>Add Item</button>
+        <div className="horizontal-container gap-1 center">
+            <input className="decent-input primary" value={input} onChange={e => setInput(e.target.value)} onKeyDown={handleKeyDown}/>
+            <button className="small primary" onClick={addItem}><b>✔️</b></button>
         </div>
-        <ul>
+
+        <div id="event-list" className="vertical-container top-margin gap-1">
             {game?.bingoEvents.map(item => (
-                <li key={item}>
-                    {item}
-                    <button onClick={() => removeItem(item)}>🗑️</button> 
-                    <button onClick={() => handleItemSelection(item)}>Auf Board platzieren</button>
-                </li>
+                <div key={item} id="event-list-entry" className="horizontal-container gap-1 space-between">
+                    <div className="event-list-item" onClick={() => handleItemSelection(item)}>{item}</div>
+                    <button className="unset primary" onClick={() => removeItem(item)}>🗑️</button> 
+                </div>
             ))}
-        </ul>
+        </div>
     </div>);
 }

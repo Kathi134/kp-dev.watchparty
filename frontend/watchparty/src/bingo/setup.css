@@ -1,0 +1,23 @@
+#event-list {
+    background-color: var(--default-light);
+    border: 0.1rem solid var(--secondary-highlight-light);
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+}
+
+#event-list-entry {
+    padding-bottom: 0.3rem;
+    border-bottom: 0.1rem solid var(--primary-highlight-light);
+    transition: background 0.3s ease;
+}
+
+.event-list-item {
+    text-align: justify;
+    flex: 1;
+}
+
+.event-list-item:hover {
+    border-radius: 0.2rem;
+    cursor: pointer;
+    background-color: var(--primary-highlight-light);
+}

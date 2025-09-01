@@ -1,0 +1,29 @@
+#horizontal-selector {
+    display: flex;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    border: 0.1rem solid black;
+}
+#horizontal-selector.primary {border-color: var(--primary-highlight);}
+#horizontal-selector.secondary {border-color: var(--secondary-highlight);}
+
+.option {
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    text-align: center;
+    flex: 1;
+    background-color: var(--default);
+    color: var(--default-light);
+    transition: background 0.3s ease;
+}
+.option.primary { background-color: var(--primary-highlight-light); }
+.option.secondary { background-color: var(--secondary-highlight-light); }
+
+.option.selected {
+    cursor: pointer;
+    text-align: center;
+    flex: 1;
+    background-color: black;
+}
+.option.primary.selected { background-color: var(--primary-highlight); }
+.option.secondary.selected { background-color: var(--secondary-highlight); }

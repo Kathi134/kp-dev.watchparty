@@ -1,12 +1,13 @@
-import { useMemo, useState } from "react";
+import "../global/basic.css"
+import { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useWebSocket } from "../global/useWebSocket";
 import Board from "./Board";
 import { API_URL } from "../global/api";
+import HorizontalSelector from "../global/components/HorizontalSelector";
 
-import "../global/basic.css"
 
-export default function ConfigureBingoBoard({lobby, me, selectedItem, onSetupStateChange}) {
+export default function ConfigureBingoBoard({lobby, me, selectedItem, unsetSelectedItem, onSetupStateChange}) {
     const { id: lobbyId } = useParams();
     const [game, setGame] = useState(lobby?.game);
     
@@ -15,20 +16,30 @@ export default function ConfigureBingoBoard({lobby, me, selectedItem, onSetupSta
     
     useWebSocket(`/topic/lobby/${lobbyId}/game`, setGame)
     
+    const configComplete = useMemo(() => {
+        return size > 0 &&  Object.keys(cellValues).length === size * size 
+    }, [size, cellValues])
+
+    const hasSelectedItem = useMemo(() => {
+        return selectedItem && selectedItem !== ""
+    }, [selectedItem])
+
     const bingoSizeOptions = useMemo(() => {
         const len = game?.bingoEvents?.length ?? 0;
         const max = Math.floor(Math.sqrt(len));
         return Array.from({length: Math.max(0, max-1)}, (_,i) => i+2);
     }, [game]);
 
-    const handleOptionSelection = (e) => {
-        setSize(e.target.value);
-    }
+    useEffect(() => {
+        if(!bingoSizeOptions.find(x=>x==size))
+            setSize(bingoSizeOptions[bingoSizeOptions.length-1]);
+    }, [bingoSizeOptions, size])
     
     const handleSelectCell = (rowIdx, colIdx, _) => {
         const key = rowIdx + "-" + colIdx
         cellValues[key] = selectedItem;
         setCellValues({...cellValues})
+        unsetSelectedItem();
     }
 
     const storeBingoBoardConfig = () => {
@@ -61,31 +72,46 @@ export default function ConfigureBingoBoard({lobby, me, selectedItem, onSetupSta
     }
 
     return (<div className="vertical-container">
-        <h3>Bingo Board konfigurieren</h3>
         
-        <div>
-            <div>Wähle die Größe deines Bingo Boards:</div>
-            {bingoSizeOptions.length <= 0
-                ? <span>Mindestens 4 Bingo-Events nötig.</span>
-                : <div>
-                    {bingoSizeOptions.map(x => <span key={`radio-option-${x}`}>
-                        <input type="radio" value={x} name="size" onChange={handleOptionSelection} />
-                        <label htmlFor={x}>{x}</label>
-                    </span>)}
+        <div className="section-container">
+            <h3>Bingo Board konfigurieren</h3>
+            
+            <div className="center vertical-container gap-1">
+                <div>Wähle die Größe deines Bingo Boards:</div>
+                {bingoSizeOptions.length <= 0
+                    ? <span>Mindestens 4 Bingo-Events nötig.</span>
+                    : <HorizontalSelector selected={size} options={bingoSizeOptions} onChange={setSize} className='primary'/> 
+                }
+            </div>
+
+            {size > 0 && (<>
+                <div className="top-margin center horizontal-container">
+                    <Board size={size} onClickCell={handleSelectCell} values={cellValues} hoverable={hasSelectedItem}/>
                 </div>
-            }
+
+                <div className="top-margin vertical-container center">
+                    {hasSelectedItem
+                        ? <>
+                            <span>Platziere das gewählte Ereignis</span>
+                            <span className="justify marked">"{selectedItem}"</span>
+                        </>
+                        : <span className="small"> 
+                            💡Wähle ein Ereignis aus der Liste und klicke dann das Bingofeld an, auf dem es platziert werden soll.
+                        </span>
+                    }
+                </div>
+
+                <div className="top-margin vertical-container center">
+                    <button className="small">Alle Felder zufällig befüllen</button>
+                </div>
+            </>)}
         </div>
 
-        <h3>Ereignisse anordnen</h3>
-        <div className="fixed-container">
-            Wähle ein Ereignis aus der Liste und klicke dann das bingo-feld an, auf dem es platziert werden soll. Alternativ kannst du auch
-            <button>Alle Felder zufällig befüllen</button>
-        </div>
-        <div>Platziere das Ereignis "{selectedItem}"</div>
-        <Board size={size} onClickCell={handleSelectCell} values={cellValues} hoverable={true}/>
-
-        <h3>Konfiguration abschließen</h3>
-        <div>Klicke <button onClick={storeBingoBoardConfig}>weiter</button>, um die Konfiguration abzuschließen.</div>
+        {configComplete > 0 && 
+            <div className="section-container center">
+                <button onClick={storeBingoBoardConfig}>Konfiguration abschließen</button>
+            </div>
+        }
     </div>);
 }
 

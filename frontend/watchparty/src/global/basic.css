@@ -7,6 +7,10 @@
     flex-direction: column;
 }
 
+.flex-1 {
+    flex: 1;
+}
+
 .gap-1 {
     gap: 0.5rem;
 }
@@ -22,6 +26,11 @@
 .center {
     align-items: center;
     text-align: center;
+    justify-content: center;
+}
+
+.justify {
+    text-align: justify;
 }
 
 .space-between {
@@ -63,4 +72,8 @@
 
 .hoverable {
     cursor: pointer;
+}
+
+.section-container {
+    margin-bottom: 1.5rem;
 }

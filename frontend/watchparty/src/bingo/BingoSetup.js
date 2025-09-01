@@ -1,3 +1,4 @@
+import "./setup.css";
 import { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useWebSocket } from "../global/useWebSocket";
@@ -33,9 +34,9 @@ export default function BingoSetup({lobby, me}) {
 
             {setupComplete 
                 ? <RunningBingoGame game={game} me={me} lobbyId={lobby.id}/>
-                : <div id="setup-container" className="horizontal-container">
+                : <div id="setup-container" className="vertical-container">
                     <CollectBingoEvents updateGameObject={setGame} handleItemSelection={setSelectedItem} game={game} />
-                    <ConfigureBingoBoard lobby={lobby} me={me} selectedItem={selectedItem} onSetupStateChange={updateSetupStatus} />
+                    <ConfigureBingoBoard lobby={lobby} me={me} selectedItem={selectedItem} unsetSelectedItem={() => setSelectedItem("")} onSetupStateChange={updateSetupStatus} />
                 </div>
             }
         </div>

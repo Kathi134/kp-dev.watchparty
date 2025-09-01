@@ -1,11 +1,14 @@
 body {
   margin: 0;
+  padding: 0.5rem;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  padding: 0.5rem;
+
+  background-color: var(--base);
+  color: var(--default);
 }
 
 code {
@@ -13,6 +16,67 @@ code {
     monospace;
 }
 
+
+/* Überschriften */
+h1, h2, h3, h4 {
+  text-align: center;
+}
+h1 { color: var(--primary-highlight); }
+h2 { color: var(--secondary-highlight); }
+h3 { color: var(--primary-highlight-light); }
+h3 { color: var(--secondary-highlight-light); }
+
+
+/* Buttons */
+button, .button {
+  background: var(--primary-highlight-light);
+  border: none;
+  border-radius: 25px;
+  color: var(--default-light);
+  font-size: 1rem;
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+button:hover {
+  background: var(--primary-highlight);
+}
+
+button.small, .button.small {
+  background-color: var(--secondary-highlight-light);
+  padding: 0.25rem 0.5rem;
+}
+
+button.small:hover, .button.small:hover {
+  background-color: var(--secondary-highlight);
+}
+
+button.unset {
+  all: unset;
+  cursor: pointer;
+  border-radius: 0.25rem;
+  transition: background 0.3s ease;
+}
+
+button.unset.primary:hover { background-color: var(--primary-highlight-light); }
+button.unset.secondary:hover { background-color: var(--secondary-highlight-light); }
+
+
+/* Links */
+a, .a {
+  color: var(--primary-highlight-light);
+  text-decoration: none;
+}
+
+a:hover, .a:hover {
+  color: var(--primary-highlight);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+
+/* input */
 .decent-input {
     font-size: unset; 
     font-weight: unset;
@@ -23,6 +87,67 @@ code {
 }
 
 .decent-input:focus-visible {  
-    outline: none;
-    box-shadow: none;
+  outline: none;
+  box-shadow: none;
+}
+
+.decent-input.h2 {  
+    color: var(--secondary-highlight-light);
+    background: var(--default-light);
+    border: 0.15rem solid var(--secondary-highlight-light);
+}
+
+.decent-input.h2:focus-visible {  
+    border: 0.15rem solid var(--secondary-highlight);
+}
+
+.decent-input.marked {  
+    color: var(--primary-highlight);
+    background: var(--default-light);
+    border: 0.15rem solid var(--primary-highlight-light);
+}
+
+.decent-input.marked:focus-visible {  
+    border: 0.15rem solid var(--primary-highlight);
+}
+
+.decent-input.primary { border: 0.1rem solid var(--primary-highlight-light); }
+.decent-input.primary:focus-visible { border: 0.15rem solid var(--primary-highlight); }
+
+.decent-input.secondary { border: 0.1rem solid var(--secondary-highlight-light); }
+.decent-input.secondary:focus-visible { border: 0.15rem solid var(--secondary-highlight); }
+
+input[type="radio"] {
+  display: none;
+}
+
+/* Create a custom radio button */
+.kp-radio {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--default);
+  border-radius: 50%;
+  position: relative;
+  cursor: pointer;
+  vertical-align: middle;
+}
+
+/* Inner dot when selected */
+.kp-radio::after {
+  content: '';
+  width: 12px;
+  height: 12px;
+  background-color: var(--primary-highlight); /* Your custom color */
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  transition: transform 0.2s ease-in-out;
+}
+
+/* Show the inner dot when the radio is checked */
+input[type="radio"]:checked + .kp-radio-radio::after {
+  transform: translate(-50%, -50%) scale(1);
 }
