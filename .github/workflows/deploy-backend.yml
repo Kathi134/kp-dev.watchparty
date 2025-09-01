@@ -34,16 +34,10 @@ jobs:
         run: |
           echo "$SSH_PRIVATE_KEY" > private_key.pem
           chmod 600 private_key.pem
-
-          # Copy the built JAR to the server
-          scp -i private_key.pem ./backend/watchparty/build/libs/watchparty-0.0.1-SNAPSHOT.jar $SERVER_USER@$SERVER_HOST:$SERVER_PATH
-
-          # SSH into server and restart backend
-          ssh -i private_key.pem $SERVER_USER@$SERVER_HOST << 'EOF'
-            cd $SERVER_PATH
-
-            # Stop any previous instance
-            pkill -f "java.*watchparty-0.0.1-SNAPSHOT.jar" || true
-
-            # Start the new instance in background
-            nohup java -jar watchparty-0.0.1-SNAPSHOT.jar > backend.log 2>&1 & EOF
+          scp -i private_key.pem -o StrictHostKeyChecking=no ./backend/watchparty/build/libs/watchparty-0.0.1-SNAPSHOT.jar $SERVER_USER@$SERVER_HOST:$SERVER_PATH/watchparty.jar
+          
+          ssh -i private_key.pem -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_HOST << 'EOF'
+          cd /home/kathi/kp-dev/watchparty-backend
+          pkill -f "java.*watchparty.jar" || true
+          nohup java -jar watchparty.jar > backend.log 2>&1 &
+          EOF
