@@ -33,5 +33,5 @@ jobs:
         run: |
           echo "$SSH_PRIVATE_KEY" > private_key.pem
           chmod 600 private_key.pem
-          scp -i private_key.pem -o StrictHostKeyChecking=no build/libs/watchparty-0.0.1-SNAPSHOT.jar $SERVER_USER@$SERVER_HOST:/home/$SERVER_USER/watchparty.jar
+          scp -i private_key.pem -o StrictHostKeyChecking=no ./backend/watchparty/build/libs/watchparty-0.0.1-SNAPSHOT.jar $SERVER_USER@$SERVER_HOST:/home/$SERVER_USER/watchparty.jar
           ssh -i private_key.pem -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_HOST "sudo systemctl restart watchparty"
