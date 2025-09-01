@@ -1,3 +1,11 @@
 .marked {
-    color: blueviolet;
+    color: var(--primary-highlight);
+}
+
+#member-container {
+    background-color: var(--default-light);
+    border: 0.1rem solid var(--secondary-highlight-light);
+    border-radius: 0.5rem;
+    padding: 0.2rem;
+    margin-bottom: 1.5rem;
 }

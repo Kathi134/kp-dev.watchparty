@@ -12,6 +12,8 @@ export default function Lobby() {
     const [me, setMe] = useState(null);
     const [game, setGame] = useState(null);
 
+
+
     useWebSocket(`/topic/lobby/${id}`, setLobby);
 
 
@@ -55,8 +57,6 @@ export default function Lobby() {
                 setGame(data.game);
             })
             .catch(console.error);
-        console.log("Starting game for lobby", lobby.id);
-        // implement your game start logic here
     }, [id, lobby]);
 
 

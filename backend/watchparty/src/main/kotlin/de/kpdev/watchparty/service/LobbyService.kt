@@ -69,9 +69,32 @@ class LobbyService(
         // TODO: evtl jede lobby mit einer game strategy ausstatten sodass flexibel games gestartet werden können
 
         lobby.startLobby()
-        val savedLobby = lobbyRepository.save(lobby)
 
+        val savedLobby = lobbyRepository.save(lobby)
         messagingTemplate.convertAndSend("/topic/lobby/$id", savedLobby.toDto())
         return savedLobby
     }
+
+    fun updateLobbyName(id: UUID, name: String): Lobby {
+        val lobby = getLobby(id)
+        lobby.name = name;
+
+        val saved = lobbyRepository.save(lobby)
+        messagingTemplate.convertAndSend("/topic/lobby/$id", saved.toDto())
+        return saved
+    }
+
+    fun updateLobbyMemberName(lobbyId: UUID, memberId: UUID, name: String): Lobby {
+        val lobby = getLobby(lobbyId)
+        val member = lobby.members.find { it.id == memberId }
+            ?: throw IllegalArgumentException("Member with id $memberId not found in lobby $lobbyId")
+
+        member.name = name
+
+        val savedLobby = lobbyRepository.save(lobby)
+        messagingTemplate.convertAndSend("/topic/lobby/$lobbyId", savedLobby.toDto())
+        return savedLobby
+    }
+
+
 }

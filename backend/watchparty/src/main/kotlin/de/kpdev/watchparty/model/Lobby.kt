@@ -9,6 +9,8 @@ class Lobby(
     @Id
     val id: UUID = UUID.randomUUID(),
 
+    var name: String? = null,
+
     val createdAt: LocalDateTime = LocalDateTime.now(),
 
     @OneToMany(mappedBy = "lobby", cascade = [CascadeType.ALL], fetch = FetchType.EAGER)
@@ -19,7 +21,6 @@ class Lobby(
     @OneToOne(mappedBy = "lobby", cascade = [CascadeType.ALL], orphanRemoval = true)
     var game: BingoGame? = null
 ) {
-
     fun addMember(userName: String) : LobbyMember {
         val existingNames = members.map { it.name }.toSet()
 

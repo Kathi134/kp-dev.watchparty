@@ -27,7 +27,6 @@ export default function LobbyHome() {
         fetch(`${API_URL}/lobbies/${lobbyId}/join`, { method: "POST" })
             .then(res => res.json())
             .then(data => {
-                console.log(`joined lobby as ${JSON.stringify(data.me)}`)
                 localStorage.setItem(storageKey, JSON.stringify(data.me));
                 navigate(`/bingo/${data.lobby.id}`);
             })
@@ -49,7 +48,8 @@ export default function LobbyHome() {
     return (<>
         <div className="vertical-container center">
             <button onClick={createLobbyClick}>Erstelle eine neue Watchparty</button>
-            oder 
+            
+            <span className="top-margin">oder </span>
             <span>tritt einer Watchparty bei:</span>
             
             <LobbyList lobbies={lobbies} onLobbyClick={joinLobbyClick}/>

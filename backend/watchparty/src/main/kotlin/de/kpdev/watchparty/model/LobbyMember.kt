@@ -8,7 +8,7 @@ data class LobbyMember(
     @Id
     val id: UUID = UUID.randomUUID(),
 
-    val name: String,
+    var name: String,
 
     @ManyToOne
     @JoinColumn(name = "lobby_id")

@@ -13,3 +13,16 @@ code {
     monospace;
 }
 
+.decent-input {
+    font-size: unset; 
+    font-weight: unset;
+    font-family: unset;
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+    width: unset;
+}
+
+.decent-input:focus-visible {  
+    outline: none;
+    box-shadow: none;
+}
