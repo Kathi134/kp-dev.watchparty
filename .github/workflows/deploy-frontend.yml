@@ -35,5 +35,5 @@ jobs:
         run: |
           echo "$SSH_PRIVATE_KEY" > private_key.pem
           chmod 600 private_key.pem
-          rsync -e "ssh -i private_key.pem -o StrictHostKeyChecking=no" -avz --delete build/ $SERVER_USER@$SERVER_HOST:$SERVER_PATH
+          rsync -e "ssh -i private_key.pem -o StrictHostKeyChecking=no" -avz --delete frontend/watchparty/build/ $SERVER_USER@$SERVER_HOST:$SERVER_PATH
           ssh -i private_key.pem -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_HOST "sudo systemctl restart apache2"
