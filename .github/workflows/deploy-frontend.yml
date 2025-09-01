@@ -1,4 +1,4 @@
-name: Deploy Watchparty
+name: Deploy Watchparty Frontend
 
 on:
   push:

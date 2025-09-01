@@ -57,7 +57,7 @@ export default function Lobby() {
                 setGame(data.game);
             })
             .catch(console.error);
-    }, [id, lobby]);
+    }, [id]);
 
 
     return (<>
