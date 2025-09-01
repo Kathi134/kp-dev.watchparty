@@ -7,6 +7,10 @@
     flex-direction: column;
 }
 
+.fixed-container {
+    width: 50%;
+}
+
 .center {
     align-items: center;
 }
@@ -25,4 +29,8 @@
 
 .padding-left {
     padding-left: 0.5rem;
+}
+
+.top-margin {
+    margin-top: 0.5rem;
 }

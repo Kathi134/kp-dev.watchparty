@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import LobbyHub from "./LobbyHub";
-import CollectBingoEvents from "../bingo/CollectBingoEvents";
 import { API_URL } from "../global/api";
 import { useWebSocket } from "../global/useWebSocket";
+import BingoSetup from "../bingo/BingoSetup";
 
 
 export default function Lobby() {
@@ -32,26 +32,25 @@ export default function Lobby() {
     }, [id]);
 
     // leaving lobby
-    useEffect(() => {
-        const handleLeave = () => {
-            if (me) {
-                navigator.sendBeacon(
-                    `/api/lobbies/${id}/leave`,
-                    JSON.stringify({ memberId: me.id })
-                );
-                localStorage.removeItem(`lobby:${id}:me`);
-            }
-        };
-        window.addEventListener("beforeunload", handleLeave);
-        return () => window.removeEventListener("beforeunload", handleLeave);
-    }, [id, me]);
+    // useEffect(() => {
+    //     const handleLeave = () => {
+    //         if (me) {
+    //             navigator.sendBeacon(
+    //                 `/api/lobbies/${id}/leave`,
+    //                 JSON.stringify({ memberId: me.id })
+    //             );
+    //             localStorage.removeItem(`lobby:${id}:me`);
+    //         }
+    //     };
+    //     window.addEventListener("beforeunload", handleLeave);
+    //     return () => window.removeEventListener("beforeunload", handleLeave);
+    // }, [id, me]);
 
 
     const startGame = useCallback(() => {
         fetch(`${API_URL}/lobbies/${id}/start`, {method: "POST"})
             .then(res => res.json())
             .then(data => {
-                console.log(data)
                 setLobby(data);
                 setGame(data.game);
             })
@@ -64,8 +63,8 @@ export default function Lobby() {
     return (<>
         {!lobby
             ? <div>Lade Lobby...</div>
-            : (lobby.state === "RUNNING"
-                ? <CollectBingoEvents lobby={lobby} me={me} game={game} />
+            : (lobby.game 
+                ? <BingoSetup lobby={lobby} me={me} game={game} />
                 : <LobbyHub lobby={lobby} me={me} onStartGame={startGame}/> 
             )
         }

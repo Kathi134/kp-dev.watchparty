@@ -4,12 +4,11 @@ import { API_URL } from "../global/api";
 import { useWebSocket } from "../global/useWebSocket";
 
 
-export default function CollectBingoEvents({lobby, me}) {
+export default function CollectBingoEvents({game, updateGameObject, handleItemSelection}) {
     const { id: lobbyId } = useParams();
-    const [game, setGame] = useState(lobby.game);
     const [input, setInput] = useState("");
 
-    useWebSocket(`/topic/lobby/${lobbyId}/game`, setGame)
+    useWebSocket(`/topic/lobby/${lobbyId}/game`, updateGameObject)
 
     const addItem = () => {
         if (!input) return;
@@ -19,7 +18,7 @@ export default function CollectBingoEvents({lobby, me}) {
             body: input
         })
             .then(data => data.json())
-            .then(data => setGame(data))
+            .then(data => updateGameObject(data))
             .catch(console.error);
         setInput("");
     };
@@ -30,7 +29,7 @@ export default function CollectBingoEvents({lobby, me}) {
             headers: { "Content-Type": "application/json" },
             body: item
         }).then(data => data.json())
-            .then(data => setGame(data))
+            .then(data => updateGameObject(data))
             .catch(console.error);
     };
 
@@ -38,21 +37,20 @@ export default function CollectBingoEvents({lobby, me}) {
         if(e.key === "Enter") { addItem(); }
     }
 
-    return (
+    return (<div className="vertical-container fixed-container">
+        <h3>Ereignis-Sammlung</h3>
         <div>
-            <h2>Bingo {game?.id}</h2>
-            <h3>Ereignis-Sammlung</h3>
-            <div>
-                <input value={input} onChange={e => setInput(e.target.value)} onKeyDown={handleKeyDown}/>
-                <button onClick={addItem}>Add Item</button>
-            </div>
-            <ul>
-                {game?.bingoEvents.map(item => (
-                    <li key={item}>
-                        {item} <button onClick={() => removeItem(item)}>Remove</button>
-                    </li>
-                ))}
-            </ul>
+            <input value={input} onChange={e => setInput(e.target.value)} onKeyDown={handleKeyDown}/>
+            <button onClick={addItem}>Add Item</button>
         </div>
-    );
+        <ul>
+            {game?.bingoEvents.map(item => (
+                <li key={item}>
+                    {item}
+                    <button onClick={() => removeItem(item)}>🗑️</button> 
+                    <button onClick={() => handleItemSelection(item)}>Auf Board platzieren</button>
+                </li>
+            ))}
+        </ul>
+    </div>);
 }

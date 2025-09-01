@@ -13,7 +13,7 @@ data class LobbyDto(
 
 fun Lobby.toDto() = LobbyDto(
     id = this.id,
-    members = this.members.map { LobbyMemberDto(it.id, it.name) },
+    members = this.members.map { it.toDto() },
     state = this.state,
     game = this.game?.toDto()
 )

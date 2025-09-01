@@ -25,7 +25,7 @@ class LobbyController(private val lobbyService: LobbyService) {
     @PostMapping("/{id}/join")
     fun joinLobby(@PathVariable id: UUID): LobbyJoinResponse {
         val (lobby, me) = lobbyService.joinLobby(id, "guest")
-        return LobbyJoinResponse(lobby.toDto(), LobbyMemberDto(me.id, me.name))
+        return LobbyJoinResponse(lobby.toDto(), me.toDto())
     }
 
     @PostMapping("/{id}/leave")

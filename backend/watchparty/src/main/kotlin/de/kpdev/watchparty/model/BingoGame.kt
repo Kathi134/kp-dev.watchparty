@@ -1,15 +1,10 @@
 package de.kpdev.watchparty.model
 
-import de.kpdev.watchparty.dto.LobbyDto
-import jakarta.persistence.ElementCollection
-import jakarta.persistence.Entity
-import jakarta.persistence.Id
-import jakarta.persistence.JoinColumn
-import jakarta.persistence.OneToOne
-import java.util.UUID
+import jakarta.persistence.*
+import java.util.*
 
 @Entity
-data class BingoGame(
+class BingoGame(
     @Id
     val id: UUID = UUID.randomUUID(),
 
@@ -17,5 +12,23 @@ data class BingoGame(
     val lobby: Lobby,
 
     @ElementCollection
-    val bingoEvents: MutableList<String> = mutableListOf()
-)
+    val bingoEvents: MutableList<String> = mutableListOf(),
+
+    @OneToMany(mappedBy = "game", cascade = [CascadeType.ALL], fetch = FetchType.EAGER)
+    val bingoBoards: MutableList<BingoBoard> = mutableListOf()
+) {
+    fun isConfigComplete(memberId: UUID? = null): Boolean {
+        if(memberId == null){
+            return bingoBoards.size == lobby.members.size
+        }
+        return bingoBoards.any { it.owner.id == memberId }
+    }
+
+    fun createBoardForMember(member: LobbyMember, size: Int, values: List<String>) : BingoBoard {
+        val events = values.map { BingoFieldData(it, false) }.toMutableList()
+        val board = BingoBoard(owner = member, size = size, events = events, game = this)
+        bingoBoards.add(board)
+
+        return board
+    }
+}

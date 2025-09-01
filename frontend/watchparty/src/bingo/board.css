@@ -1,0 +1,37 @@
+.board {
+    border-collapse: collapse;
+    text-align: center;
+    display: block;
+}
+
+.board-cell {
+    position: relative; /* allows absolute positioning inside */
+    height: 50px;
+    width: 50px;
+    border: 1px solid black;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 14px;
+}
+
+.board-cell.hoverable:hover {
+    background: lightgrey;
+    cursor: pointer;
+}
+
+/* ✅ Cross overlay for ticked cells */
+.board-cell.ticked::after {
+    content: "✖";             /* the cross symbol */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 28px;          /* larger than the cell text */
+    color: darkred;
+    pointer-events: none;     /* click still goes to the cell */
+    opacity: 0.9;
+}
+
+.bingoed {
+    background-color: gold;
+}
