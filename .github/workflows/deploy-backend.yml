@@ -37,7 +37,26 @@ jobs:
           scp -i private_key.pem -o StrictHostKeyChecking=no ./backend/watchparty/build/libs/watchparty-0.0.1-SNAPSHOT.jar $SERVER_USER@$SERVER_HOST:$SERVER_PATH/watchparty.jar
           
           ssh -i private_key.pem -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_HOST << 'EOF'
-          cd /home/kathi/kp-dev
+          cd SERVER_PATH
           pkill -f "java.*watchparty.jar" || true
           nohup java -jar watchparty.jar > backend.log 2>&1 &
+          EOF
+      
+      - name: Health check backend
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SERVER_USER: ${{ secrets.SERVER_USER }}
+          SERVER_HOST: ${{ secrets.SERVER_HOST }}
+        run: |
+          echo "$SSH_PRIVATE_KEY" > private_key.pem
+          chmod 600 private_key.pem
+
+          # Give the app a few seconds to start
+          sleep 10
+
+          ssh -i private_key.pem -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_HOST << 'EOF'
+            echo "=== Checking backend.log ==="
+            tail -n 30 SERVER_PATH/backend.log
+            echo "=== Testing health endpoint ==="
+            curl -f http://localhost:8080/api/health || exit 1
           EOF
