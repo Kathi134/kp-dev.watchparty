@@ -37,7 +37,7 @@ jobs:
           scp -i private_key.pem -o StrictHostKeyChecking=no ./backend/watchparty/build/libs/watchparty-0.0.1-SNAPSHOT.jar $SERVER_USER@$SERVER_HOST:$SERVER_PATH/watchparty.jar
           
           ssh -i private_key.pem -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_HOST << 'EOF'
-          cd /home/kathi/kp-dev/watchparty-backend
+          cd /home/kathi/kp-dev
           pkill -f "java.*watchparty.jar" || true
           nohup java -jar watchparty.jar > backend.log 2>&1 &
           EOF
