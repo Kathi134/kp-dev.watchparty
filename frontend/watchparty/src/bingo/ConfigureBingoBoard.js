@@ -31,7 +31,7 @@ export default function ConfigureBingoBoard({lobby, me, selectedItem, unsetSelec
     }, [game]);
 
     useEffect(() => {
-        if(!bingoSizeOptions.find(x=>x==size))
+        if(!bingoSizeOptions.find(x=>x===size))
             setSize(bingoSizeOptions[bingoSizeOptions.length-1]);
     }, [bingoSizeOptions, size])
     

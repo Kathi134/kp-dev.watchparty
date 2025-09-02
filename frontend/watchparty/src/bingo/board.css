@@ -2,20 +2,22 @@
     border-collapse: collapse;
     text-align: center;
     display: block;
+    border-radius: 0.2rem;
 }
 
 .board-cell {
     position: relative; /* allows absolute positioning inside */
-    height: 50px;
-    width: 50px;
-    border: 1px solid black;
+    height: 3.5rem;
+    width: 3.5rem;
+    border: 0.1rem solid var(--default);
+    background-color: white;
     text-align: center;
     vertical-align: middle;
-    font-size: 14px;
+    font-size: 1rem;
 }
 
 .board-cell.hoverable:hover {
-    background: lightgrey;
+    background: var(--default-light);
     cursor: pointer;
 }
 

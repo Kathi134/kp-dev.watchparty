@@ -8,7 +8,7 @@ export default function BingoHome() {
     <h1>{title}</h1>
 
     <main>
-      <div id="join-lobby" className="vertical-container center top-margin">
+      <div id="join-lobby" className="vertical-container center top-margin section-container">
           <h2 className="no-top-margin">Los geht's!</h2>
           <LobbyHome/>
       </div>

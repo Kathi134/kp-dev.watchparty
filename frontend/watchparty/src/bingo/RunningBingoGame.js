@@ -57,19 +57,24 @@ export default function RunningBingoGame({game, me, lobbyId}) {
 
 
     return (<div>
-        <h3>Mein Bingo Board</h3>
-        <div>Klicke ein Feld an, um es abzuhaken.</div>
-        <Board size={myBoard?.size} 
-            onClickCell={handleCellClick} hoverable={true}
-            values={transformFlatListToIndexedEvents(myBoard?.events)} 
-            crossedValues={transformFlatListToCrossedValues(myBoard?.events)}/>
 
-        <h3>Bingo Boards der Mitspieler*innen</h3>
-        {boards.filter(b => b.ownerId !== me.id).map(b => <>
-            <div>Board von {b.ownerName}</div>
-            <Board size={b.size}
-                values={transformFlatListToIndexedEvents(b.events)} 
-                crossedValues={transformFlatListToCrossedValues(b.events)}/>
-        </>)}
+        <div className="section-container vertical-container center">
+            <h3>Mein Bingo Board</h3>
+            <span className="small">Klicke ein Feld an, um es abzuhaken.</span>
+            <Board size={myBoard?.size} className="top-margin"
+                onClickCell={handleCellClick} hoverable={true}
+                values={transformFlatListToIndexedEvents(myBoard?.events)} 
+                crossedValues={transformFlatListToCrossedValues(myBoard?.events)}/>
+        </div>
+
+        <div className="section-container vertical-container center">
+            <h3>Bingo Boards der Mitspieler*innen</h3>
+            {boards.filter(b => b.ownerId !== me.id).map(b => <>
+                <span className="small">Board von {b.ownerName}</span>
+                <Board size={b.size} className='top-margin'
+                    values={transformFlatListToIndexedEvents(b.events)} 
+                    crossedValues={transformFlatListToCrossedValues(b.events)}/>
+            </>)}
+        </div>
     </div>)   
 }

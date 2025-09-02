@@ -1,5 +1,4 @@
 import "./horizontal-selector.css"
-import { useState } from "react";
 
 export default function HorizontalSelector({ options, onChange, className, selected }) {
 //   const [selected, setSelected] = useState(options[0]);

@@ -2,7 +2,7 @@ import "./board.css"
 import "../global/basic.css"
 import { useCallback, useEffect, useState, useMemo } from "react"
 
-export default function Board({size, hoverable, onClickCell, values, crossedValues}) {
+export default function Board({className, size, hoverable, onClickCell, values, crossedValues}) {
     const [bingos, setBingos] = useState({})
 
     const checkForBingo = useCallback((arrayToCheckIn, targetName, result) => {
@@ -68,7 +68,7 @@ export default function Board({size, hoverable, onClickCell, values, crossedValu
 
     return (
         <>
-            <table className="board"><tbody>
+            <table className={"board "+className}><tbody>
                 {Array.from({length: size}, (_,i) => i).map(rowIdx => 
                     <tr key={`row-${rowIdx}`}>
                         {Array.from({length: size}, (_,i) => i).map(colIdx => 
