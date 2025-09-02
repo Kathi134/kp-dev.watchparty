@@ -30,7 +30,7 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           SERVER_USER: ${{ secrets.SERVER_USER }}
           SERVER_HOST: ${{ secrets.SERVER_HOST }}
-          SERVER_PATH: "/home/kathi/kp-dev/watchparty-backend"
+          SERVER_PATH: "/home/kathi/kp-dev/watchparty"
         run: |
           echo "$SSH_PRIVATE_KEY" > private_key.pem
           chmod 600 private_key.pem
