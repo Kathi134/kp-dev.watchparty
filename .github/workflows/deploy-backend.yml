@@ -30,7 +30,7 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           SERVER_USER: ${{ secrets.SERVER_USER }}
           SERVER_HOST: ${{ secrets.SERVER_HOST }}
-          SERVER_PATH: "/home/kathi/kp-dev"
+          SERVER_PATH: "/home/kathi/kp-dev/watchparty"
         run: |
           echo "$SSH_PRIVATE_KEY" > private_key.pem
           chmod 600 private_key.pem
@@ -47,6 +47,7 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           SERVER_USER: ${{ secrets.SERVER_USER }}
           SERVER_HOST: ${{ secrets.SERVER_HOST }}
+          SERVER_PATH: "/home/kathi/kp-dev/watchparty"
         run: |
           echo "$SSH_PRIVATE_KEY" > private_key.pem
           chmod 600 private_key.pem
@@ -54,9 +55,9 @@ jobs:
           # Give the app a few seconds to start
           sleep 10
 
-          ssh -i private_key.pem -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_HOST << 'EOF'
+          ssh -i private_key.pem -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_HOST << EOF
             echo "=== Checking backend.log ==="
-            tail -n 30 SERVER_PATH/backend.log
+            tail -n 30 $SERVER_PATH/backend.log
             echo "=== Testing health endpoint ==="
             curl -f http://localhost:8080/api/health || exit 1
           EOF
