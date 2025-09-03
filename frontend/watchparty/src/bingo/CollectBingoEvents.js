@@ -45,12 +45,15 @@ export default function CollectBingoEvents({game, updateGameObject, handleItemSe
         </div>
 
         <div id="event-list" className="vertical-container top-margin gap-1">
-            {game?.bingoEvents.map(item => (
-                <div key={item} id="event-list-entry" className="horizontal-container gap-1 space-between">
-                    <div className="event-list-item" onClick={() => handleItemSelection(item)}>{item}</div>
-                    <button className="unset primary" onClick={() => removeItem(item)}>🗑️</button> 
-                </div>
-            ))}
+            {game?.bingoEvents.length > 0 
+                ? game?.bingoEvents.map(item => (
+                    <div key={item} id="event-list-entry" className="horizontal-container gap-1 space-between">
+                        <div className="event-list-item" onClick={() => handleItemSelection(item)}>{item}</div>
+                        <button className="unset primary" onClick={() => removeItem(item)}>🗑️</button> 
+                    </div>
+                 ))
+                : <span className="center small">Noch keine Ereignisse angelegt.</span>
+            }
         </div>
     </div>);
 }

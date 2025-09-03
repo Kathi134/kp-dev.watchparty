@@ -1,5 +1,5 @@
 import "../global/basic.css"
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useWebSocket } from "../global/useWebSocket";
 import Board from "./Board";
@@ -42,6 +42,19 @@ export default function ConfigureBingoBoard({lobby, me, selectedItem, unsetSelec
         unsetSelectedItem();
     }
 
+    const assignRandom = useCallback(() => {
+        // shuffle allItems, map to a object of "key"->"item"
+        const shuffled = [...(lobby.game.bingoEvents)].sort(() => Math.random() - 0.5);
+
+        const indices = Array.from({ length: size }, (_, row) => Array.from({ length: size }, (_, col) => `${row}-${col}`)).flat();
+        const assignments = indices
+            .map((key, i) => [key, shuffled[i]])
+            .reduce((acc, [key, val]) => ({ ...acc, [key]: val }), {});
+
+        setCellValues(assignments);
+        unsetSelectedItem();
+    }, [lobby, size, unsetSelectedItem])
+
     const storeBingoBoardConfig = () => {
         const sortedValues = Object.keys(cellValues)
             .sort((a, b) => {
@@ -70,6 +83,7 @@ export default function ConfigureBingoBoard({lobby, me, selectedItem, unsetSelec
             })
             .catch(console.error);
     }
+
 
     return (<div className="vertical-container">
         
@@ -102,7 +116,7 @@ export default function ConfigureBingoBoard({lobby, me, selectedItem, unsetSelec
                 </div>
 
                 <div className="top-margin vertical-container center">
-                    <button className="small">Alle Felder zufällig befüllen</button>
+                    <button onClick={assignRandom} className="small">Alle Felder zufällig befüllen</button>
                 </div>
             </>)}
         </div>
