@@ -25,6 +25,11 @@ export default function BingoSetup({lobby, me}) {
             .catch(console.error);
     }, [me, lobbyId]);
 
+    const checkSelectedItemAfterRemoval = useCallback((removedItem) => {
+        if(removedItem === selectedItem)
+            setSelectedItem("");
+    }, [selectedItem]);
+
     useEffect(() => {
         updateSetupStatus(me);
     }, [me, updateSetupStatus])
@@ -41,7 +46,7 @@ export default function BingoSetup({lobby, me}) {
             {setupComplete 
                 ? <RunningBingoGame game={game} me={me} lobbyId={lobby.id}/>
                 : <div id="setup-container" className="vertical-container">
-                    <CollectBingoEvents updateGameObject={setGame} handleItemSelection={setSelectedItem} game={game} />
+                    <CollectBingoEvents updateGameObject={setGame} handleItemSelection={setSelectedItem} onRemove={checkSelectedItemAfterRemoval} game={game} />
                     <ConfigureBingoBoard lobby={lobby} me={me} game={game}
                         selectedItem={selectedItem} unsetSelectedItem={() => setSelectedItem("")} 
                         onSetupStateChange={updateSetupStatus} />

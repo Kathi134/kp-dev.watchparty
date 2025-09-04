@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import { API_URL } from "../global/api";
 import { useWebSocket } from "../global/useWebSocket";
 
-export default function CollectBingoEvents({game, updateGameObject, handleItemSelection}) {
+export default function CollectBingoEvents({game, updateGameObject, handleItemSelection = () => {}, onRemove = () => {}}) {
     const { id: lobbyId } = useParams();
     const [input, setInput] = useState("");
 
@@ -24,6 +24,7 @@ export default function CollectBingoEvents({game, updateGameObject, handleItemSe
     };
 
     const removeItem = (item) => {
+        onRemove(item);
         fetch(`${API_URL}/lobbies/${lobbyId}/game/events/remove`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
