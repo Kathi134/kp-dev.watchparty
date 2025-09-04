@@ -19,21 +19,30 @@ class BingoGameService(
     private val lobbyMemberRepository: LobbyMemberRepository
 ){
     fun addItem(lobbyId: UUID, item: String) : BingoGame {
-        return manipulateItems(lobbyId, item, MutableList<String>::add)
+        val addClosure = {
+            list: MutableList<String> ->
+                list.add(0, item)
+                true
+        }
+        return manipulateItems(lobbyId, addClosure)
     }
 
     fun removeItem(lobbyId: UUID, item: String) : BingoGame {
-        return manipulateItems(lobbyId, item, MutableList<String>::remove)
+        val removeClosure = {
+            list: MutableList<String> ->
+                list.remove(item)
+        }
+        return manipulateItems(lobbyId, removeClosure)
     }
 
     private fun manipulateItems(
-        lobbyId: UUID, subject: String,
-        action: (MutableList<String>, String) -> Boolean) : BingoGame
+        lobbyId: UUID,
+        action: (MutableList<String>) -> Boolean) : BingoGame
     {
         val game = gameRepository.findByLobbyId(lobbyId)
             ?: throw RuntimeException("Lobby not started")
 
-        action(game.bingoEvents, subject)
+        action(game.bingoEvents)
 
         val saved = gameRepository.save(game)
         messagingTemplate.convertAndSend("/topic/lobby/$lobbyId/game", saved.toDto())

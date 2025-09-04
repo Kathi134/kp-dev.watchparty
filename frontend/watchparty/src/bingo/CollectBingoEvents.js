@@ -1,5 +1,5 @@
 import "./setup.css"
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { API_URL } from "../global/api";
 import { useWebSocket } from "../global/useWebSocket";
@@ -10,8 +10,10 @@ export default function CollectBingoEvents({game, updateGameObject, handleItemSe
 
     useWebSocket(`/topic/lobby/${lobbyId}/game`, updateGameObject)
 
-    const addItem = () => {
+    const addItem = useCallback(() => {
         if (!input) return;
+        if (game?.bingoEvents.some(x => x===input)) return;
+
         fetch(`${API_URL}/lobbies/${lobbyId}/game/events/add`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -21,7 +23,7 @@ export default function CollectBingoEvents({game, updateGameObject, handleItemSe
             .then(data => updateGameObject(data))
             .catch(console.error);
         setInput("");
-    };
+    }, [input, game.bingoEvents]);
 
     const removeItem = (item) => {
         onRemove(item);
@@ -44,6 +46,10 @@ export default function CollectBingoEvents({game, updateGameObject, handleItemSe
             <input className="decent-input primary" value={input} onChange={e => setInput(e.target.value)} onKeyDown={handleKeyDown}/>
             <button className="small primary" onClick={addItem}><b>✔️</b></button>
         </div>
+
+        {(game?.bingoEvents).some(x => x===input) && 
+            <span className="small center">Dieses Ereignis ist bereits in der Liste.</span>
+        }
 
         <div id="event-list" className="vertical-container top-margin gap-1">
             {game?.bingoEvents.length > 0 

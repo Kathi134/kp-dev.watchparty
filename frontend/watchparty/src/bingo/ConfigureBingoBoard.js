@@ -132,8 +132,7 @@ export default function ConfigureBingoBoard({lobby, me, selectedItem, unsetSelec
     </div>);
 }
 
-// TODO: hover auf cell nur möglich wenn ereignis ausgewählt
 // TODO: keine doppelten ereignis belegungen
+// TODO: ausblend button für die bereits verwendeten items
 // TODO: leere bingo cells markieren
-// TODO: weiter nur klickbar wenn alle felder befüllt
 // TODO: events in feldern tauschen
