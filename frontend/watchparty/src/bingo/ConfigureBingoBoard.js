@@ -36,6 +36,9 @@ export default function ConfigureBingoBoard({lobby, me, selectedItem, unsetSelec
     }, [bingoSizeOptions, size])
     
     const handleSelectCell = (rowIdx, colIdx, _) => {
+        if(!hasSelectedItem)
+            return
+
         const key = rowIdx + "-" + colIdx
         cellValues[key] = selectedItem;
         setCellValues({...cellValues})
@@ -133,3 +136,4 @@ export default function ConfigureBingoBoard({lobby, me, selectedItem, unsetSelec
 // TODO: keine doppelten ereignis belegungen
 // TODO: leere bingo cells markieren
 // TODO: weiter nur klickbar wenn alle felder befüllt
+// TODO: events in feldern tauschen
