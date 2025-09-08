@@ -58,7 +58,7 @@ export default function ConfigureBingoBoard({lobby, me, selectedItem, unsetSelec
         unsetSelectedItem();
     }, [lobby, size, unsetSelectedItem])
 
-    const storeBingoBoardConfig = () => {
+    const storeBingoBoardConfig = useCallback(() => {
         const sortedValues = Object.keys(cellValues)
             .sort((a, b) => {
                 const [rowA, colA] = a.split("-").map(Number);
@@ -85,7 +85,7 @@ export default function ConfigureBingoBoard({lobby, me, selectedItem, unsetSelec
                 onSetupStateChange();
             })
             .catch(console.error);
-    }
+    }, [cellValues, lobbyId, me.id, onSetupStateChange, size]);
 
 
     return (<div className="vertical-container">

@@ -1,5 +1,5 @@
 import "./setup.css"
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { useParams } from "react-router-dom";
 import { API_URL } from "../global/api";
 import { useWebSocket } from "../global/useWebSocket";
@@ -23,7 +23,7 @@ export default function CollectBingoEvents({game, updateGameObject, handleItemSe
             .then(data => updateGameObject(data))
             .catch(console.error);
         setInput("");
-    }, [input, game.bingoEvents]);
+    }, [input, game.bingoEvents, lobbyId, updateGameObject]);
 
     const removeItem = (item) => {
         onRemove(item);
