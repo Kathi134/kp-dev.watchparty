@@ -15,6 +15,18 @@ export default function ConfigureBingoBoard({lobby, me, selectedItem, unsetSelec
     const [cellValues, setCellValues] = useState({});
     
     useWebSocket(`/topic/lobby/${lobbyId}/game`, setGame)
+
+    useEffect(() => {
+        const updateNecessary = Object.values(cellValues)
+            .some(v => !game.bingoEvents.includes(v))
+        if(updateNecessary) {
+            const updatedCellValues = Object.fromEntries(
+                Object.entries(cellValues)
+                    .filter(([_, v]) => game.bingoEvents.some(b => b === v))
+            );
+            setCellValues(updatedCellValues)
+        }
+    }, [game.bingoEvents, cellValues])
     
     const configComplete = useMemo(() => {
         return size > 0 &&  Object.keys(cellValues).length === size * size 
@@ -47,7 +59,7 @@ export default function ConfigureBingoBoard({lobby, me, selectedItem, unsetSelec
 
     const assignRandom = useCallback(() => {
         // shuffle allItems, map to a object of "key"->"item"
-        const shuffled = [...(lobby.game.bingoEvents)].sort(() => Math.random() - 0.5);
+        const shuffled = [...(game.bingoEvents)].sort(() => Math.random() - 0.5);
 
         const indices = Array.from({ length: size }, (_, row) => Array.from({ length: size }, (_, col) => `${row}-${col}`)).flat();
         const assignments = indices
@@ -56,7 +68,7 @@ export default function ConfigureBingoBoard({lobby, me, selectedItem, unsetSelec
 
         setCellValues(assignments);
         unsetSelectedItem();
-    }, [lobby, size, unsetSelectedItem])
+    }, [game.bingoEvents, size, unsetSelectedItem])
 
     const storeBingoBoardConfig = useCallback(() => {
         const sortedValues = Object.keys(cellValues)
